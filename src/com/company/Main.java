@@ -6,8 +6,8 @@ import java.util.Arrays;
 public class Main {
 
     public static void main(String[] args){
-        String basic = new String("FFFF214214");
+        boolean[] in = new boolean[]{true,false,true,true,false};
         MyField obj = new MyField();
-        System.out.println(obj.hexToBin(basic));
+        System.out.println(Arrays.toString(obj.cycleShiftElementLeft(in,1)));
     }
 }

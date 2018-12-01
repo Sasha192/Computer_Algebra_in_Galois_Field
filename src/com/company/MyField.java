@@ -14,8 +14,8 @@ public class MyField extends Field{
     /*
 
     Заметки себе:
-        2) modElement:  реализация через деление многочленов ( тоже самое, что и с числами ). Возвращаем только остаток.
-            Подумать, как можно ускорить это ( Может быть с помощью битовых операций. Подумать про реализицию умножения с пом. других операций.
+        2) modElement:
+            Подумать, как можно ускорить это ( Может быть с помощью битовых операций.
             Может быть использовать другие операции. Или дополнительно выделять память: S(n) = O(n). Сохраняя результаты промежуточных операций
 
         4) Пытаемся мутить по SOLIDу.
@@ -81,6 +81,21 @@ public class MyField extends Field{
             rez[i] = false;
         }
         return rez;
+    }
+
+    public boolean[] cycleShiftElementLeft(boolean[] arr, int k){
+        boolean temp_prev, temp; int len = arr.length;
+        for(int j = 0; j < len; j++) {
+            temp_prev = arr[j];
+            int indx;
+            for (int i = 0; i < len; i++) {
+                indx = (i + 1) % len;
+                temp = arr[indx];
+                arr[indx] = temp_prev;
+                temp_prev = temp;
+            }
+        }
+        return arr;
     }
 
     private boolean[] modElement(boolean[] a){
