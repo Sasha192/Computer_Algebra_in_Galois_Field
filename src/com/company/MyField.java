@@ -83,18 +83,20 @@ public class MyField extends Field{
         return rez;
     }
 
-    public boolean[] cycleShiftElementLeft(boolean[] arr, int k){
-        boolean temp_prev, temp; int len = arr.length;
-        for(int j = 0; j < len; j++) {
-            temp_prev = arr[j];
-            int indx;
-            for (int i = 0; i < len; i++) {
-                indx = (i + 1) % len;
-                temp = arr[indx];
-                arr[indx] = temp_prev;
-                temp_prev = temp;
-            }
+    public void reverse(boolean[] arr, int start, int len){
+        boolean temp; int indx = 2*start + len - 1;
+        for(int i = start; i < (start + len)/2; i++){
+            temp = arr[indx - i];
+            arr[2*start + len - i - 1] = arr[i];
+            arr[i] = temp;
         }
+    }
+
+    private boolean[] cycleShiftElementLeft(boolean[] arr, int k){
+        int len = arr.length;
+        reverse(arr,0,len - k);
+        reverse(arr, len - k , k);
+        reverse(arr, 0, len);
         return arr;
     }
 
