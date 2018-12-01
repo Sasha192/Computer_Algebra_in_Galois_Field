@@ -7,6 +7,7 @@ public class MyField extends Field{
     private int extension;
     private boolean[] generator;
     private int generatorLen;
+    private boolean[] varForInverse;
     public boolean[] mulIdentity;
     public boolean[] addIdentity;
 
@@ -83,7 +84,7 @@ public class MyField extends Field{
         return rez;
     }
 
-    public void reverse(boolean[] arr, int start, int len){
+    private void reverse(boolean[] arr, int start, int len){
         boolean temp; int indx = 2*start + len - 1;
         for(int i = start; i < (start + len)/2; i++){
             temp = arr[indx - i];
@@ -118,23 +119,16 @@ public class MyField extends Field{
     }
 
     private boolean[] mulElements(boolean[] a,boolean[] b){
-        int len_a = a.length; int len_b = b.length;
-        if(len_a < len_b){ a = zeroIzation(a,len_b-len_a);}
-        else if(len_b < len_a){ b = zeroIzation(b,len_a - len_b);}
-        len_a = a.length;
-        boolean[] rez_arr = new boolean[1]; boolean[] temp;
-        for (int i = 0; i < len_a; i++){
-            if(b[i]){
-                temp = bitShiftElementLeft(a,i);
-                rez_arr = addGalois(rez_arr,temp);
-            }
-        }
-        return rez_arr;
+
+
+
+
+        return new boolean[1];
     }
 
 
 
-    public String hexToBin(String basic_str){
+    private String hexToBin(String basic_str){
             int k = 8;
             int str_len = basic_str.length();
             StringBuffer str_buf = new StringBuffer("");
@@ -159,8 +153,11 @@ public class MyField extends Field{
     }
 
 
-    public boolean[] getBooleanArray(String basic){
-        String str = hexToBin(basic);
+    private boolean[] getBooleanArray(String basic, boolean bool){
+        String str = basic;
+        if (bool) {
+            str = hexToBin(basic);
+        }
         int string_len = str.length();
         boolean[] arr = new boolean[string_len]; char chr;
         for(int i = string_len - 1; i > -1; i--){
@@ -177,10 +174,12 @@ public class MyField extends Field{
 
     public void setExtension(int extension){
         this.extension = extension;
-        addIdentity = new boolean[extension];
-        addIdentity[0] = false;
-        mulIdentity = new boolean[extension];
-        mulIdentity[0] = true;
+        this.addIdentity = new boolean[extension];
+        this.addIdentity[0] = false;
+        this.mulIdentity = new boolean[extension];
+        this.mulIdentity[0] = true;
+        String binM = Long.toBinaryString(extension);
+        this.varForInverse = addGalois(getBooleanArray(binM,false),this.mulIdentity);
     }
 
     public void setGenerator(boolean[] gen){
@@ -211,24 +210,16 @@ public class MyField extends Field{
 
 
     public boolean[] squaredElement(boolean[] a){
-        int len_a = a.length;
-        boolean[] prod = new boolean[2*len_a];
-        for(int i = 0; i < len_a; i++){
-            if(a[i]){
-                prod[2*i] = a[i];
-            }
-        }
-        prod = modElement(prod);
-        return prod;
+        a = cycleShiftElementLeft(a,1);
+        return a;
     }
 
-    public boolean[] getTrace(boolean[] arg){
-        arg = killZeros(arg); boolean[] prod = new boolean[1];
-        for(int i = 0; i < extension; i++){
-            prod = addElements(arg,prod);
-            arg = squaredElement(arg);
+    public boolean getTrace(boolean[] arg){
+        boolean trace = false; int len = arg.length;
+        for(int i = 0; i < len; i++){
+            trace = trace^arg[i];
         }
-        return prod;
+        return trace;
     }
 
 
@@ -248,13 +239,17 @@ public class MyField extends Field{
         return arr;
     }
 
-    public boolean[] getInverse(boolean[] arg){
-        boolean[] prod = new boolean[]{true};
-        for(int i = 1; i < this.extension; i++){
-            arg = squaredElement(arg);
-            prod = mulElements(prod,arg);
-        }
-        return prod;
+
+    public boolean[] getInverse(boolean[] arg) {
+        boolean[] b = arg;
+        boolean[] m_1 = this.varForInverse;
+        /*
+
+        Тут должен быть Ито-Цудзии
+
+        */
+
+        return new boolean[1];
     }
 
 }

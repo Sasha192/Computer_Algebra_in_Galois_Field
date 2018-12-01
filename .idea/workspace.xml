@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6281952b-5c75-4528-959d-1bf27c9e628a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Laba_4_SROM/com/company/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Laba_4_SROM/com/company/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Laba_4_SROM/com/company/MyField.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Laba_4_SROM/com/company/MyField.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/IField.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/IField.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/MyField.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/MyField.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -17,7 +14,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/company/Main.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="136">
@@ -26,16 +23,16 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/company/MyField.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="93" lean-forward="true" selection-start-line="93" selection-end-line="93" />
+            <state relative-caret-position="403">
+              <caret line="247" column="34" selection-start-line="247" selection-start-column="34" selection-end-line="247" selection-end-column="34" />
               <folding>
-                <element signature="e#5815#5816#0" expanded="true" />
-                <element signature="e#5854#5855#0" expanded="true" />
-                <element signature="e#5894#5895#0" expanded="true" />
-                <element signature="e#5933#5934#0" expanded="true" />
+                <element signature="e#5476#5477#0" expanded="true" />
+                <element signature="e#5515#5516#0" expanded="true" />
+                <element signature="e#5555#5556#0" expanded="true" />
+                <element signature="e#5594#5595#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -44,8 +41,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/company/IField.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" selection-start-line="11" selection-end-line="11" />
+            <state relative-caret-position="153">
+              <caret line="9" column="18" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -67,12 +64,13 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/com/company/MyField.java" />
         <option value="$PROJECT_DIR$/src/com/company/Main.java" />
+        <option value="$PROJECT_DIR$/src/com/company/IField.java" />
+        <option value="$PROJECT_DIR$/src/com/company/MyField.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="200" />
     <option name="y" value="140" />
     <option name="width" value="705" />
@@ -157,16 +155,15 @@
       <option name="presentableId" value="Default" />
       <updated>1543663777721</updated>
       <workItem from="1543663779166" duration="6186000" />
-      <workItem from="1543688979092" duration="866000" />
+      <workItem from="1543688979092" duration="2686000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7052000" />
+    <option name="totallyTimeSpent" value="8872000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25302014" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -177,7 +174,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3286119" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3286119" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -203,13 +200,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/company/IField.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/company/Field.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -217,23 +207,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/company/MyField.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="93" lean-forward="true" selection-start-line="93" selection-end-line="93" />
-          <folding>
-            <element signature="e#5815#5816#0" expanded="true" />
-            <element signature="e#5854#5855#0" expanded="true" />
-            <element signature="e#5894#5895#0" expanded="true" />
-            <element signature="e#5933#5934#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/company/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="10" column="73" selection-start-line="10" selection-start-column="73" selection-end-line="10" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/IField.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="18" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/MyField.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="403">
+          <caret line="247" column="34" selection-start-line="247" selection-start-column="34" selection-end-line="247" selection-end-column="34" />
+          <folding>
+            <element signature="e#5476#5477#0" expanded="true" />
+            <element signature="e#5515#5516#0" expanded="true" />
+            <element signature="e#5555#5556#0" expanded="true" />
+            <element signature="e#5594#5595#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

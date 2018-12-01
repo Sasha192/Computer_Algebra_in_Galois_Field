@@ -7,5 +7,5 @@ public interface IField {
     public boolean[] getMulIdentity();
     public boolean[] addGalois(boolean[] a, boolean[] b);
     public boolean[] mulGalois(boolean[] a,boolean[] b);
-    public boolean[] getTrace(boolean[] arg);
+    public boolean getTrace(boolean[] arg);
 }
