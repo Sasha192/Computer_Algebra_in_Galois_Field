@@ -1,13 +1,28 @@
 package com.company;
+import java.awt.image.AreaAveragingScaleFilter;
 import java.util.Random;
 
 import java.util.Arrays;
 
 public class Main {
 
+
     public static void main(String[] args){
-        boolean[] in = new boolean[]{false,false,true,true,false};
         MyField obj = new MyField();
-        System.out.println(Arrays.toString(obj.cycleShiftElementLeft(in,4)));
+        obj.setExtension(191);
+        obj.setGenerator();
+        boolean[] arg_1 = new boolean[191];
+        boolean[] arg_2 = new boolean[191];
+        for(int i = 0; i < 191; i++){
+            if(i%2 == 0){
+                arg_1[i] = true;
+            }
+            else{
+                arg_2[i] = true;
+            }
+        }
+        boolean[] res = obj.getInverse(arg_1);
+        boolean[] prod = obj.mulGalois(res,arg_1);
+        System.out.println("len = " + res.length + "\n" +  Arrays.toString(prod));
     }
 }

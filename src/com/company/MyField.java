@@ -7,7 +7,7 @@ public class MyField extends Field{
     private int extension;
     private boolean[] generator;
     private int generatorLen;
-    private boolean[] varForInverse;
+    private boolean[][] Matrix;
     public boolean[] mulIdentity;
     public boolean[] addIdentity;
 
@@ -46,6 +46,9 @@ public class MyField extends Field{
 
 
     private boolean[] zeroIzation(boolean[] a, int k){
+        if(k<=0){
+            return a;
+        }
         int len_a = a.length;
         int length = len_a + k;
         boolean[] rez_arr = new boolean[length];
@@ -94,6 +97,9 @@ public class MyField extends Field{
     }
 
     private boolean[] cycleShiftElementLeft(boolean[] arr, int k){
+        if(k<=0){
+            return arr;
+        }
         int len = arr.length;
         reverse(arr,0,len - k);
         reverse(arr, len - k , k);
@@ -118,50 +124,84 @@ public class MyField extends Field{
         return a;
     }
 
-    private boolean[] mulElements(boolean[] a,boolean[] b){
-
-
-
-
-        return new boolean[1];
-    }
-
-
-
-    private String hexToBin(String basic_str){
-            int k = 8;
-            int str_len = basic_str.length();
-            StringBuffer str_buf = new StringBuffer("");
-            long a; int i = k;
-            for (i = i; i <= str_len; i += k) {
-                a = Long.parseLong(basic_str.substring(i - k, i), 16);
-                int nums_number  = shortBitLength(16,a);
-                int zeros_number = 32/4 - nums_number;
-                String str_0 = new String(new char[zeros_number]).replace("\0", "0");
-                str_buf.append(str_0);
-                str_buf.append(Long.toBinaryString(a));
-            }
-            if (str_len % k != 0) {
-                a = Long.parseLong(str_buf.substring(i-k,str_len), 16);
-                int nums_number  = shortBitLength(16,a);
-                int zeros_number = 32 /4 - nums_number;
-                String str_0 = new String(new char[zeros_number]).replace("\0", "0");
-                str_buf.append(str_0);
-                str_buf.append(Long.toBinaryString(a));
-            }
-            return new String(str_buf);
-    }
-
-
-    private boolean[] getBooleanArray(String basic, boolean bool){
-        String str = basic;
-        if (bool) {
-            str = hexToBin(basic);
+    private boolean[][] setMatrix(int extension){
+        long p = 2*extension + 1;
+        long[] lng = new long[extension];
+        lng[0] = 1;
+        for(int i = 1; i < extension; i++){
+            lng[i] = (lng[i-1] << 1 )%p;
         }
-        int string_len = str.length();
+        long pow_i, pow_j;
+        boolean[][] Matrix = new boolean[extension][extension];
+        for (int i = 0; i < extension; i++ ){
+            pow_i = lng[i];
+            for (int j = 0; j < extension; j++){
+                pow_j = lng[j];
+                if (((pow_i + pow_j) % p) == 1 || (((pow_i - pow_j) + p) % p) == 1 ||
+                        ((pow_j - pow_i + p) % p) == 1 || (((-pow_i - pow_j)+p) % p) == 1){
+                    Matrix[i][j] = true;
+                    continue;
+                }
+                Matrix[i][j] = false;
+            }
+        }
+        return Matrix;
+    }
+
+    private boolean[] mulElements(boolean[] a,boolean[] b){
+        int len_a = a.length; int len_b = b.length;
+        a = zeroIzation(a,extension - len_a);
+        b = zeroIzation(b, extension - len_b);
+        len_a = a.length;
+        boolean[] res = new boolean[len_a];
+        for(int k = 0; k < extension; k++){
+            a = cycleShiftElementLeft(a,k);
+            b = cycleShiftElementLeft(b,k);
+            boolean res_k = false;
+            boolean[] temp = new boolean[extension];
+            for(int j = 0; j < extension; j ++){
+                for(int i = 0; i < extension; i++){
+                    temp[j] = (temp[j])^(a[i]&Matrix[i][j]);
+                }
+            }
+            for(int i = 0; i < extension; i ++){
+                res_k = (res_k)^(temp[i]^b[i]);
+            }
+            res[k] = res_k;
+        }
+        return res;
+    }
+
+    private long[] hexToDecimal(String basic_str){
+        int k = 4;
+        int str_len = basic_str.length();
+        int arr_len = str_len/k + ( str_len%k>0 ? 1:0 ) ;
+        StringBuffer str_buf = new StringBuffer(basic_str);
+        long[] arr = new long [arr_len];
+        for(int i = k, j = 0; i<=str_len && j <arr_len; i+=k, j++){
+            arr[j] = Long.parseLong(str_buf.substring(str_len-i,str_len-i+k),16);
+        }
+        if (str_len%k!=0) {
+            arr[arr_len - 1] = Long.parseLong(str_buf.substring(0, str_len % k), 16);
+        }
+        return arr;
+    }
+
+    private String getBinString(String arg){
+        long[] arr = hexToDecimal(arg);
+        int len = arr.length; StringBuffer str = new StringBuffer("");
+        for(int i = len - 1; i > -1; i--){
+            str.append(Long.toBinaryString(arr[i]));
+        }
+        String ret_str = str.toString();
+        return ret_str;
+    }
+
+    public boolean[] getBooleanArray(String basic){
+        int string_len = basic.length();
         boolean[] arr = new boolean[string_len]; char chr;
         for(int i = string_len - 1; i > -1; i--){
-            chr = str.charAt(i);
+            chr = basic.charAt(i);
             if(chr == '1'){
                 arr[i] = true;
                 continue;
@@ -178,23 +218,20 @@ public class MyField extends Field{
         this.addIdentity[0] = false;
         this.mulIdentity = new boolean[extension];
         this.mulIdentity[0] = true;
-        String binM = Long.toBinaryString(extension);
-        this.varForInverse = addGalois(getBooleanArray(binM,false),this.mulIdentity);
+        this.Matrix = setMatrix(extension);
     }
 
-    public void setGenerator(boolean[] gen){
-        this.generator = gen;
-        this.generatorLen = gen.length;
+    public void setGenerator(){
+        boolean[] p0 = new boolean[]{true};
+        boolean[] p1 = new boolean[]{true,true};
+        boolean[] temp; this.generator = new boolean[]{false};
+        for(int i = 1; i < this.extension; i++){
+            this.generator = addElements(bitShiftElementLeft(p1,1),p0);
+            p0 = p1;
+            p1 = this.generator;
+        }
+        this.generatorLen = this.generator.length;
     }
-
-    public boolean[] getAddIdentity(){
-        return this.addIdentity;
-    }
-
-    public boolean[] getMulIdentity(){
-        return this.mulIdentity;
-    }
-
 
     public boolean[] addGalois(boolean[] a, boolean[] b){
         a = modElement(a);
@@ -203,9 +240,9 @@ public class MyField extends Field{
     }
 
     public boolean[] mulGalois(boolean[] a,boolean[] b){
-        boolean[] prod = mulElements(a,b);
-        prod = modElement(prod);
-        return prod;
+        a = modElement(a);
+        b = modElement(b);
+        return mulElements(a,b);
     }
 
 
@@ -216,7 +253,7 @@ public class MyField extends Field{
 
     public boolean getTrace(boolean[] arg){
         boolean trace = false; int len = arg.length;
-        for(int i = 0; i < len; i++){
+        for( int i = 0; i < len; i ++){
             trace = trace^arg[i];
         }
         return trace;
@@ -225,7 +262,7 @@ public class MyField extends Field{
 
 
     public boolean[] getPower(boolean[] arg, String power){
-        String bin_string_b = hexToBin(power);
+        String bin_string_b = power;
         int string_len = bin_string_b.length();
         boolean[] arr = new boolean[]{true};
         char chr;
@@ -241,15 +278,12 @@ public class MyField extends Field{
 
 
     public boolean[] getInverse(boolean[] arg) {
-        boolean[] b = arg;
-        boolean[] m_1 = this.varForInverse;
-        /*
-
-        Тут должен быть Ито-Цудзии
-
-        */
-
-        return new boolean[1];
+        boolean[] prod = new boolean[]{true};
+        for(int i = 1; i < this.extension; i++){
+            arg = squaredElement(arg);
+            prod = mulElements(prod,arg);
+        }
+        return prod;
     }
 
 }
