@@ -3,7 +3,7 @@ package com.company;
 import javax.swing.*;
 import java.util.Arrays;
 
-public class MyField extends Field{
+public class MyField{
     private int extension;
     private boolean[] generator;
     private int generatorLen;
@@ -11,17 +11,6 @@ public class MyField extends Field{
     public boolean[] mulIdentity;
     public boolean[] addIdentity;
 
-
-    /*
-
-    Заметки себе:
-        2) modElement:
-            Подумать, как можно ускорить это ( Может быть с помощью битовых операций.
-            Может быть использовать другие операции. Или дополнительно выделять память: S(n) = O(n). Сохраняя результаты промежуточных операций
-
-        4) Пытаемся мутить по SOLIDу.
-
-    */
 
     private int shortBitLength(long base, long a){
         if(a == 0 ) {
@@ -87,16 +76,18 @@ public class MyField extends Field{
         return rez;
     }
 
-    private void reverse(boolean[] arr, int start, int len){
-        boolean temp; int indx = 2*start + len - 1;
-        for(int i = start; i < (start + len)/2; i++){
-            temp = arr[indx - i];
-            arr[2*start + len - i - 1] = arr[i];
-            arr[i] = temp;
+    private void reverse(boolean[] arr, int start, int end){
+        boolean temp; end--;
+        while(start < end){
+            temp = arr[end];
+            arr[end] = arr[start];
+            arr[start] = temp;
+            start++;
+            end--;
         }
     }
 
-    private boolean[] cycleShiftElementLeft(boolean[] arr, int k){
+    private boolean[] cycleShiftElementRight(boolean[] arr, int k){
         if(k<=0){
             return arr;
         }
@@ -107,21 +98,16 @@ public class MyField extends Field{
         return arr;
     }
 
-    private boolean[] modElement(boolean[] a){
-        a = killZeros(a);
-        int len_a = a.length;
-        if(len_a < this.generatorLen){
-            return a;
+
+    private boolean[] cycleShiftElementLeft(boolean[] arr, int k){
+        if(k<=0){
+            return arr;
         }
-        boolean[] temp;
-        int lendiff = len_a - this.generatorLen;
-        while(lendiff>=0 ){
-            temp = bitShiftElementLeft(generator,lendiff);
-            a = addElements(a,temp);
-            a = killZeros(a);
-            lendiff = a.length - this.generatorLen;
-        }
-        return a;
+        int len = arr.length;
+        reverse(arr,0,k);
+        reverse(arr, k , len);
+        reverse(arr, 0, len);
+        return arr;
     }
 
     private boolean[][] setMatrix(int extension){
@@ -155,8 +141,10 @@ public class MyField extends Field{
         len_a = a.length;
         boolean[] res = new boolean[len_a];
         for(int k = 0; k < extension; k++){
-            a = cycleShiftElementLeft(a,k);
-            b = cycleShiftElementLeft(b,k);
+            if( k > 0 ) {
+                a = cycleShiftElementLeft(a, 1);
+                b = cycleShiftElementLeft(b, 1);
+            }
             boolean res_k = false;
             boolean[] temp = new boolean[extension];
             for(int j = 0; j < extension; j ++){
@@ -165,7 +153,7 @@ public class MyField extends Field{
                 }
             }
             for(int i = 0; i < extension; i ++){
-                res_k = (res_k)^(temp[i]^b[i]);
+                res_k = (res_k)^(temp[i]&b[i]);
             }
             res[k] = res_k;
         }
@@ -222,11 +210,14 @@ public class MyField extends Field{
     }
 
     public void setGenerator(){
-        boolean[] p0 = new boolean[]{true};
-        boolean[] p1 = new boolean[]{true,true};
+        boolean[] p0 = new boolean[191];
+        for(int i = 0; i < extension; i++){
+            p0[i] = true;
+        }
+        boolean[] p1 = addGalois(p0,new boolean[]{true});
         boolean[] temp; this.generator = new boolean[]{false};
         for(int i = 1; i < this.extension; i++){
-            this.generator = addElements(bitShiftElementLeft(p1,1),p0);
+            this.generator = addElements(mulElements(p1,new boolean[]{true}),p0);
             p0 = p1;
             p1 = this.generator;
         }
@@ -234,20 +225,15 @@ public class MyField extends Field{
     }
 
     public boolean[] addGalois(boolean[] a, boolean[] b){
-        a = modElement(a);
-        b = modElement(b);
         return addElements(a,b);
     }
 
     public boolean[] mulGalois(boolean[] a,boolean[] b){
-        a = modElement(a);
-        b = modElement(b);
         return mulElements(a,b);
     }
 
-
     public boolean[] squaredElement(boolean[] a){
-        a = cycleShiftElementLeft(a,1);
+        a = cycleShiftElementRight(a,1);
         return a;
     }
 
@@ -258,8 +244,6 @@ public class MyField extends Field{
         }
         return trace;
     }
-
-
 
     public boolean[] getPower(boolean[] arg, String power){
         String bin_string_b = power;
